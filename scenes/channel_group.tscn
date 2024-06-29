@@ -1,0 +1,187 @@
+[gd_scene load_steps=10 format=3 uid="uid://dudsg6wm7vg3q"]
+
+[ext_resource type="Theme" uid="uid://b0yxsyv4escld" path="res://themes/theme.tres" id="1_jd3f4"]
+[ext_resource type="Script" path="res://scripts/channel_group.gd" id="2_llt3x"]
+[ext_resource type="Texture2D" uid="uid://dqqo8ub1s28ci" path="res://icons/folder.svg" id="3_k0xkb"]
+[ext_resource type="Texture2D" uid="uid://b6ljhkx85xm8b" path="res://icons/folder_open.svg" id="4_8wa2h"]
+[ext_resource type="Texture2D" uid="uid://dh03fbwpd2vkp" path="res://icons/queue_music.svg" id="5_ltgee"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xjvgl"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nf16"]
+bg_color = Color(0.4, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5v22y"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ht3if"]
+bg_color = Color(0.602062, 0.58769, 0.135498, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="ChannelGroup" type="PanelContainer"]
+size_flags_vertical = 0
+focus_mode = 1
+theme = ExtResource("1_jd3f4")
+theme_type_variation = &"ChannelGroup"
+script = ExtResource("2_llt3x")
+folder = ExtResource("3_k0xkb")
+folderOpen = ExtResource("4_8wa2h")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Controls" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Buttons and Name" type="HBoxContainer" parent="MarginContainer/Controls"]
+layout_mode = 2
+
+[node name="WeightMargin" type="MarginContainer" parent="MarginContainer/Controls/Buttons and Name"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="Weight" type="Label" parent="MarginContainer/Controls/Buttons and Name/WeightMargin"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "Hi"
+horizontal_alignment = 1
+
+[node name="Mute Button" type="MarginContainer" parent="MarginContainer/Controls/Buttons and Name"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="Mute Button" type="Button" parent="MarginContainer/Controls/Buttons and Name/Mute Button"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_xjvgl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5nf16")
+toggle_mode = true
+text = "M"
+
+[node name="Solo Button" type="MarginContainer" parent="MarginContainer/Controls/Buttons and Name"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="Solo Button" type="Button" parent="MarginContainer/Controls/Buttons and Name/Solo Button"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_5v22y")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ht3if")
+toggle_mode = true
+text = "S"
+
+[node name="Queue Button" type="MarginContainer" parent="MarginContainer/Controls/Buttons and Name"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="AddToQueue" type="Button" parent="MarginContainer/Controls/Buttons and Name/Queue Button"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 1
+icon = ExtResource("5_ltgee")
+flat = true
+icon_alignment = 1
+
+[node name="Channel Name" type="LineEdit" parent="MarginContainer/Controls/Buttons and Name"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+text = "Channel Name"
+expand_to_text_length = true
+
+[node name="Weight Control" type="HBoxContainer" parent="MarginContainer/Controls"]
+layout_mode = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/Controls/Weight Control"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="ExpandButton" type="Button" parent="MarginContainer/Controls/Weight Control/MarginContainer3"]
+layout_mode = 2
+mouse_filter = 1
+toggle_mode = true
+icon = ExtResource("3_k0xkb")
+flat = true
+icon_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Controls/Weight Control"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Weight" type="HSlider" parent="MarginContainer/Controls/Weight Control/MarginContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+max_value = 2.0
+step = 0.01
+value = 1.0
+scrollable = false
+
+[node name="Child Margins" type="MarginContainer" parent="MarginContainer/Controls"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Children" type="VBoxContainer" parent="MarginContainer/Controls/Child Margins"]
+layout_mode = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="toggled" from="MarginContainer/Controls/Buttons and Name/Mute Button/Mute Button" to="." method="_on_mute_button_toggled"]
+[connection signal="toggled" from="MarginContainer/Controls/Buttons and Name/Solo Button/Solo Button" to="." method="_on_solo_button_toggled"]
+[connection signal="pressed" from="MarginContainer/Controls/Buttons and Name/Queue Button/AddToQueue" to="." method="_on_add_to_queue_pressed"]
+[connection signal="text_submitted" from="MarginContainer/Controls/Buttons and Name/Channel Name" to="." method="_on_channel_name_text_submitted"]
+[connection signal="toggled" from="MarginContainer/Controls/Weight Control/MarginContainer3/ExpandButton" to="." method="OnFolderToggled"]
+[connection signal="drag_ended" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_drag_ended"]
+[connection signal="drag_started" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_drag_started"]
+[connection signal="value_changed" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_value_changed"]

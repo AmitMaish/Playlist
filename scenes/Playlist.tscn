@@ -1,0 +1,339 @@
+[gd_scene load_steps=14 format=3 uid="uid://q46c3b2w1t27"]
+
+[ext_resource type="Script" path="res://scripts/Playlist.gd" id="1_dai6i"]
+[ext_resource type="Script" path="res://scripts/Audio.gd" id="2_3gwim"]
+[ext_resource type="Texture2D" uid="uid://dhhe6n0n12ewg" path="res://icons/pause.svg" id="3_tvish"]
+[ext_resource type="Texture2D" uid="uid://coh1ghfwt3p58" path="res://icons/play_arrow.svg" id="4_l2a6h"]
+[ext_resource type="Theme" uid="uid://b0yxsyv4escld" path="res://themes/theme.tres" id="5_hmdir"]
+[ext_resource type="Script" path="res://scripts/UI.gd" id="6_4rj0i"]
+[ext_resource type="Texture2D" uid="uid://0shfrgsrvjvs" path="res://icons/menu.svg" id="7_pvjaw"]
+[ext_resource type="Texture2D" uid="uid://goawdt8p4xfe" path="res://icons/close.svg" id="8_ukf4s"]
+[ext_resource type="Script" path="res://scripts/SelectedChannel.gd" id="9_82vpe"]
+[ext_resource type="Texture2D" uid="uid://dh03fbwpd2vkp" path="res://icons/queue_music.svg" id="10_1f6b5"]
+[ext_resource type="Texture2D" uid="uid://bd5b0gbc2mfrx" path="res://icons/remove.svg" id="11_kmim0"]
+[ext_resource type="Texture2D" uid="uid://c1b02xgd4f2mp" path="res://icons/skip_next.svg" id="12_2head"]
+[ext_resource type="Script" path="res://scripts/DisplayTime.gd" id="13_1826s"]
+
+[node name="Playlist" type="Node"]
+script = ExtResource("1_dai6i")
+
+[node name="Audio" type="AudioStreamPlayer" parent="." node_paths=PackedStringArray("fileDialogue", "timeSince", "timeline", "timeRemaining", "label", "interface")]
+unique_name_in_owner = true
+script = ExtResource("2_3gwim")
+fileDialogue = NodePath("../FileDialog")
+timeSince = NodePath("../UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline/TimeElapsed")
+timeline = NodePath("../UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline/MarginContainer/Timeline")
+timeRemaining = NodePath("../UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline/TimeRemaining")
+label = NodePath("../UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Label Margin/HBoxContainer/Label")
+interface = NodePath("../UI")
+pauseIcon = ExtResource("3_tvish")
+playIcon = ExtResource("4_l2a6h")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open a Directory"
+size = Vector2i(711, 159)
+exclusive = false
+ok_button_text = "Select Current Folder"
+dialog_hide_on_ok = true
+file_mode = 2
+access = 2
+use_native_dialog = true
+
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("audioPlayer", "removeNextSong", "nextSongLabel", "UI")]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_hmdir")
+script = ExtResource("6_4rj0i")
+audioPlayer = NodePath("../Audio")
+removeNextSong = NodePath("Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer/HBoxContainer/Queued")
+nextSongLabel = NodePath("Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer/HBoxContainer/NextSongLabel")
+UI = NodePath(".")
+
+[node name="Margins" type="MarginContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Margins"]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HBoxContainer" parent="UI/Margins/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Mixer Container" type="PanelContainer" parent="UI/Margins/VBoxContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="Mixer Margins" type="MarginContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/Mixer Container"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/Mixer Container/Mixer Margins"]
+layout_mode = 2
+
+[node name="Mixer" type="VBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/Mixer Container/Mixer Margins/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="OpenInspector" type="Button" parent="UI/Margins/VBoxContainer/HSplitContainer/Mixer Container/Mixer Margins"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+icon = ExtResource("7_pvjaw")
+flat = true
+
+[node name="InspectorContainer" type="PanelContainer" parent="UI/Margins/VBoxContainer/HSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Inspector Margins" type="MarginContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Header" type="PanelContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Channel"
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Header"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Header/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Header/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Inspector"
+
+[node name="Close Inspector" type="Button" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Header/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+icon = ExtResource("8_ukf4s")
+flat = true
+
+[node name="SelectedChannel" type="PanelContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Channel"
+script = ExtResource("9_82vpe")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AddToQueue" type="Button" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("10_1f6b5")
+flat = true
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "0db"
+
+[node name="ChannelName" type="TextEdit" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Select a Song"
+editable = false
+wrap_mode = 1
+scroll_fit_content_height = true
+
+[node name="VolumeSlider" type="HSlider" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "Channel Volume"
+min_value = -100.0
+max_value = 6.0
+step = 0.01
+
+[node name="Queue Display" type="PanelContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Channel"
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display"]
+layout_mode = 2
+
+[node name="QueueList" type="VBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NextSong" type="PanelContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ChannelGroup"
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer"]
+layout_mode = 2
+
+[node name="UpNext" type="Label" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Up Next:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Queued" type="MarginContainer" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="RemoveFromQueue" type="Button" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer/HBoxContainer/Queued"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 1
+icon = ExtResource("11_kmim0")
+flat = true
+icon_alignment = 1
+
+[node name="NextSongLabel" type="RichTextLabel" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+bbcode_enabled = true
+text = "[i]Song Name[/i]"
+fit_content = true
+
+[node name="QueueSeperator" type="HSeparator" parent="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Transport" type="PanelContainer" parent="UI/Margins/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Margins/VBoxContainer/Transport"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Margins/VBoxContainer/Transport/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Label Margin" type="MarginContainer" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Label Margin"]
+layout_mode = 2
+
+[node name="Play_Pause" type="Button" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Label Margin/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("3_tvish")
+flat = true
+icon_alignment = 1
+
+[node name="SkipButton" type="Button" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Label Margin/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("12_2head")
+flat = true
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Label Margin/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+focus_mode = 2
+text = "Song Title"
+
+[node name="Timeline Margin" type="MarginContainer" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Timeline" type="HBoxContainer" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin"]
+layout_mode = 2
+
+[node name="TimeElapsed" type="Label" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline"]
+layout_mode = 2
+text = "00:00"
+script = ExtResource("13_1826s")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="Timeline" type="HSlider" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+scrollable = false
+
+[node name="TimeRemaining" type="Label" parent="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline"]
+layout_mode = 2
+text = "00:00"
+script = ExtResource("13_1826s")
+
+[connection signal="finished" from="Audio" to="Audio" method="PlaySong"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="pressed" from="UI/Margins/VBoxContainer/HSplitContainer/Mixer Container/Mixer Margins/OpenInspector" to="UI" method="_on_open_inspector_pressed"]
+[connection signal="pressed" from="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Header/MarginContainer/HBoxContainer/Close Inspector" to="UI" method="_on_close_inspector_pressed"]
+[connection signal="pressed" from="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer/VBoxContainer/HBoxContainer/AddToQueue" to="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel" method="_on_add_to_queue_pressed"]
+[connection signal="value_changed" from="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel/MarginContainer/VBoxContainer/VolumeSlider" to="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/SelectedChannel" method="_on_volume_slider_value_changed"]
+[connection signal="mouse_entered" from="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong" to="UI" method="_on_next_song_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong" to="UI" method="_on_next_song_mouse_exited"]
+[connection signal="pressed" from="UI/Margins/VBoxContainer/HSplitContainer/InspectorContainer/Inspector Margins/ScrollContainer/VBoxContainer/Queue Display/MarginContainer/QueueList/NextSong/MarginContainer/VBoxContainer/HBoxContainer/Queued/RemoveFromQueue" to="UI" method="_on_remove_from_queue_pressed"]
+[connection signal="toggled" from="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Label Margin/HBoxContainer/Play_Pause" to="Audio" method="_on_play_pause_toggled"]
+[connection signal="pressed" from="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Label Margin/HBoxContainer/SkipButton" to="Audio" method="_on_skip_button_pressed"]
+[connection signal="drag_ended" from="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline/MarginContainer/Timeline" to="Audio" method="_on_timeline_drag_ended"]
+[connection signal="drag_started" from="UI/Margins/VBoxContainer/Transport/MarginContainer/VBoxContainer/Timeline Margin/Timeline/MarginContainer/Timeline" to="Audio" method="_on_timeline_drag_started"]

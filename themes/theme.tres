@@ -1,0 +1,69 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://b0yxsyv4escld"]
+
+[ext_resource type="Texture2D" uid="uid://dqqo8ub1s28ci" path="res://icons/folder.svg" id="1_i744u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmqtj"]
+bg_color = Color(0.381703, 0.381703, 0.381703, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qq7dw"]
+bg_color = Color(0.298039, 0.298039, 0.298039, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.789879, 0.789879, 0.789879, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xh7hv"]
+texture = ExtResource("1_i744u")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynq6b"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0davb"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqgqx"]
+bg_color = Color(0.233925, 0.233925, 0.233925, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8no1g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ud18u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_swrhu"]
+
+[resource]
+default_font_size = 18
+Channel/base_type = &"PanelContainer"
+Channel/styles/panel = SubResource("StyleBoxFlat_kmqtj")
+ChannelGroup/base_type = &"PanelContainer"
+ChannelGroup/styles/panel = SubResource("StyleBoxFlat_qq7dw")
+FolderButton/base_type = &"Button"
+FolderButton/styles/normal = SubResource("StyleBoxTexture_xh7hv")
+Label/font_sizes/font_size = 20
+LineEdit/colors/selection_color = Color(0.501961, 0.501961, 0.501961, 0)
+LineEdit/font_sizes/font_size = 20
+LineEdit/styles/focus = SubResource("StyleBoxFlat_ynq6b")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_0davb")
+MarginContainer/constants/margin_bottom = 16
+MarginContainer/constants/margin_left = 16
+MarginContainer/constants/margin_right = 16
+MarginContainer/constants/margin_top = 16
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_hqgqx")
+TextEdit/colors/background_color = Color(0.380392, 0.380392, 0.380392, 0)
+TextEdit/styles/focus = SubResource("StyleBoxEmpty_8no1g")
+TextEdit/styles/normal = SubResource("StyleBoxEmpty_ud18u")
+TextEdit/styles/read_only = SubResource("StyleBoxEmpty_swrhu")
