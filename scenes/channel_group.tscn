@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dudsg6wm7vg3q"]
+[gd_scene load_steps=11 format=3 uid="uid://dudsg6wm7vg3q"]
 
-[ext_resource type="Theme" uid="uid://b0yxsyv4escld" path="res://themes/theme.tres" id="1_jd3f4"]
+[ext_resource type="Theme" uid="uid://b0yxsyv4escld" path="res://themes/theme.tres" id="1_hjkdy"]
 [ext_resource type="Script" path="res://scripts/channel_group.gd" id="2_llt3x"]
 [ext_resource type="Texture2D" uid="uid://dqqo8ub1s28ci" path="res://icons/folder.svg" id="3_k0xkb"]
 [ext_resource type="Texture2D" uid="uid://b6ljhkx85xm8b" path="res://icons/folder_open.svg" id="4_8wa2h"]
 [ext_resource type="Texture2D" uid="uid://dh03fbwpd2vkp" path="res://icons/queue_music.svg" id="5_ltgee"]
+[ext_resource type="Texture2D" uid="uid://bj7pyiu4n70c5" path="res://icons/fullscreen.svg" id="6_brmlj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xjvgl"]
 bg_color = Color(0.176471, 0.176471, 0.176471, 1)
@@ -37,7 +38,7 @@ corner_radius_bottom_left = 8
 [node name="ChannelGroup" type="PanelContainer"]
 size_flags_vertical = 0
 focus_mode = 1
-theme = ExtResource("1_jd3f4")
+theme = ExtResource("1_hjkdy")
 theme_type_variation = &"ChannelGroup"
 script = ExtResource("2_llt3x")
 folder = ExtResource("3_k0xkb")
@@ -127,6 +128,24 @@ mouse_filter = 1
 text = "Channel Name"
 expand_to_text_length = true
 
+[node name="Fullscreen Button" type="MarginContainer" parent="MarginContainer/Controls/Buttons and Name"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Fullscreen" type="Button" parent="MarginContainer/Controls/Buttons and Name/Fullscreen Button"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 1
+icon = ExtResource("6_brmlj")
+flat = true
+icon_alignment = 1
+
 [node name="Weight Control" type="HBoxContainer" parent="MarginContainer/Controls"]
 layout_mode = 2
 
@@ -181,6 +200,7 @@ layout_mode = 2
 [connection signal="toggled" from="MarginContainer/Controls/Buttons and Name/Solo Button/Solo Button" to="." method="_on_solo_button_toggled"]
 [connection signal="pressed" from="MarginContainer/Controls/Buttons and Name/Queue Button/AddToQueue" to="." method="_on_add_to_queue_pressed"]
 [connection signal="text_submitted" from="MarginContainer/Controls/Buttons and Name/Channel Name" to="." method="_on_channel_name_text_submitted"]
+[connection signal="pressed" from="MarginContainer/Controls/Buttons and Name/Fullscreen Button/Fullscreen" to="." method="_on_fullscreen_pressed"]
 [connection signal="toggled" from="MarginContainer/Controls/Weight Control/MarginContainer3/ExpandButton" to="." method="OnFolderToggled"]
 [connection signal="drag_ended" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_drag_ended"]
 [connection signal="drag_started" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_drag_started"]

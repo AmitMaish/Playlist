@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://bt5kkx6hn302w"]
+
+[ext_resource type="Script" path="res://scripts/CuedSong.gd" id="1_qg6ce"]
+[ext_resource type="Texture2D" uid="uid://bd5b0gbc2mfrx" path="res://icons/remove.svg" id="2_lh1ce"]
+
+[node name="CuedSong" type="PanelContainer"]
+script = ExtResource("1_qg6ce")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="RemoveFromQueue" type="Button" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 1
+icon = ExtResource("2_lh1ce")
+flat = true
+icon_alignment = 1
+
+[node name="SongTitle" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Song Title"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/RemoveFromQueue" to="." method="_on_remove_from_queue_pressed"]

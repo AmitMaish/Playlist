@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://poxephajikbr"]
+[gd_scene load_steps=10 format=3 uid="uid://poxephajikbr"]
 
-[ext_resource type="Theme" uid="uid://b0yxsyv4escld" path="res://themes/theme.tres" id="1_m6qs7"]
+[ext_resource type="Theme" uid="uid://b0yxsyv4escld" path="res://themes/theme.tres" id="1_qu8tk"]
 [ext_resource type="Script" path="res://scripts/channel.gd" id="2_vtr0n"]
 [ext_resource type="Texture2D" uid="uid://dh03fbwpd2vkp" path="res://icons/queue_music.svg" id="3_2htl5"]
 [ext_resource type="Texture2D" uid="uid://dqqo8ub1s28ci" path="res://icons/folder.svg" id="4_38pe8"]
+[ext_resource type="Texture2D" uid="uid://bj7pyiu4n70c5" path="res://icons/fullscreen.svg" id="4_o1aq0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xjvgl"]
 bg_color = Color(0.176471, 0.176471, 0.176471, 1)
@@ -36,7 +37,7 @@ corner_radius_bottom_left = 8
 [node name="Channel" type="PanelContainer"]
 size_flags_vertical = 0
 focus_mode = 1
-theme = ExtResource("1_m6qs7")
+theme = ExtResource("1_qu8tk")
 theme_type_variation = &"Channel"
 script = ExtResource("2_vtr0n")
 
@@ -124,6 +125,31 @@ mouse_filter = 1
 text = "Channel Name"
 expand_to_text_length = true
 
+[node name="This is here for parity" type="Control" parent="MarginContainer/Controls/Buttons and Name"]
+visible = false
+layout_mode = 2
+
+[node name="Fullscreen Button" type="MarginContainer" parent="MarginContainer/Controls/Buttons and Name/This is here for parity"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+offset_left = -44.0
+offset_right = -4.0
+offset_bottom = 32.0
+size_flags_horizontal = 10
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Fullscreen" type="Button" parent="MarginContainer/Controls/Buttons and Name/This is here for parity/Fullscreen Button"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 1
+icon = ExtResource("4_o1aq0")
+flat = true
+icon_alignment = 1
+
 [node name="Weight Control" type="HBoxContainer" parent="MarginContainer/Controls"]
 layout_mode = 2
 
@@ -161,6 +187,7 @@ scrollable = false
 [connection signal="toggled" from="MarginContainer/Controls/Buttons and Name/Solo Margin/Solo Button" to="." method="_on_solo_button_toggled"]
 [connection signal="pressed" from="MarginContainer/Controls/Buttons and Name/Queue Button/AddToQueue" to="." method="_on_add_to_queue_pressed"]
 [connection signal="text_submitted" from="MarginContainer/Controls/Buttons and Name/Channel Name" to="." method="_on_channel_name_text_submitted"]
+[connection signal="pressed" from="MarginContainer/Controls/Buttons and Name/This is here for parity/Fullscreen Button/Fullscreen" to="." method="_on_fullscreen_pressed"]
 [connection signal="drag_ended" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_drag_ended"]
 [connection signal="drag_started" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_drag_started"]
 [connection signal="value_changed" from="MarginContainer/Controls/Weight Control/MarginContainer2/Weight" to="." method="_on_v_slider_value_changed"]

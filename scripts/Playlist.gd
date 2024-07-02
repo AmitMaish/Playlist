@@ -1,11 +1,29 @@
 extends Node
 
 func _ready():
-	%FileDialogue.popup()
+	%FileDialog.popup()
 
-# The next song button TODO
+# The next song button
 func PlayNextSong():
-	pass
+	x.SongEquallsNextSong()
+	
+	%Audio.PlaySong()
+	
+	# After selecting the next song we need to determine the song after it.
+	# First we update the queue
+	x.queueAccess.lock()
+	if x.queue.front() != null:
+		x.queue.pop_front()
+	x.queueAccess.unlock()
+	
+	# Then we determine the next song and load it into memory
+	DetermineNextSong()
+	%Audio.LoadSong(x.nextSong.path)
+	
+	# Finally we update the UI
+	%SongPlaying.text = x.song.name
+	%UI.UpdateQueueDisplay()
+	%UI.TweenTimeline(0, x.numSamples, x.samplerate)
 
 # Choose the next song
 func DetermineNextSong():
@@ -14,11 +32,14 @@ func DetermineNextSong():
 	x.RootAccess.lock()
 	x.nextAudioAccess.lock()
 	
+	x.volume = 0
+	
 	# Picking the song
-	if x.queue.size() == 0:
+	x.nextSong = x.queue.front()
+	if x.nextSong == null:
 		x.nextSong = x.RootDirectory.ChooseSong()
-	else:
-		x.nextSong = x.queue[0]
+	elif x.nextSong.isDir:
+		x.nextSong = x.nextSong.ChooseSong()
 	
 	# Thread saftey
 	x.nextAudioAccess.unlock()
@@ -27,23 +48,40 @@ func DetermineNextSong():
 
 # Queue Management
 func AddToQueue(song: Playable):
+	print("Adding ", song, " to queue.")
 	x.queue.append(song)
+	
+	# If the queue only has one song, we've changed the next song.
 	if x.queue.size() == 1:
+		print("Queue change caused next song to change")
 		DetermineNextSong()
+	
+	%UI.UpdateQueueDisplay()
 
 func RemoveFromQueue(index: int):
+	# Thread saftey
+	x.queueAccess.lock()
+	
 	# Remove item at the index
+	print("Remove ", index, " from queue recieved")
 	x.queue.pop_at(index)
+	
+	print("Queue now is: ", x.queue)
+	
+	# Thread saftey
+	x.queueAccess.unlock()
 	
 	# If the index is zero, we have changed the next song so we need to find a new song
 	if index == 0:
 		DetermineNextSong()
+	
+	%UI.UpdateQueueDisplay()
 
 
 # Helper function that scans directories for playables
 func OpenPlayableDirectory(dir: String):
 	var directory = DirAccess.open(dir)
-	print("Opened Directory: ", dir)
+	#print("Opened Directory: ", dir)
 	
 	var contents = Array()
 	
@@ -51,15 +89,15 @@ func OpenPlayableDirectory(dir: String):
 	var file = directory.get_next()
 	
 	while file != "":
-		print("Found file: ", file)
+		#print("Found file: ", file)
 		if file.ends_with(".wav") or file.ends_with(".mp3") or file.ends_with(".ogg") or directory.current_is_dir():
 			var playable = Playable.new(dir + "/" + file)
 			playable.name = file.split(".")[0]
-			print("File Name: ", playable)
+			#print("File Name: ", playable)
 			if directory.current_is_dir():
-				print("File is directory")
+				#print("File is directory")
 				playable.isDir = true
-				print("Opening: ", dir + "/" + file)
+				#print("Opening: ", dir + "/" + file)
 				playable.children = OpenPlayableDirectory(dir + "/" + file)
 				if playable.children.size() == 0:
 					file = directory.get_next()
@@ -69,19 +107,23 @@ func OpenPlayableDirectory(dir: String):
 	return contents
 
 
+func _on_audio_finished():
+	pass # Replace with function body.
+
+
 
 # ((********** Handle Inputs **********))
 # Handle file dialogue
 func _on_file_dialog_dir_selected(dir):
 	x.RootAccess.lock()
-	print("Playlist Selected")
+	#print("Playlist Selected")
 	x.RootDirectory = Playable.new(dir)
-	print("Assigned Root Directory")
+	#print("Assigned Root Directory")
 	x.RootDirectory.name = "Root"
-	print("Renamed Root Directory")
+	#print("Renamed Root Directory")
 	x.RootDirectory.isDir = true
 	x.RootDirectory.children = OpenPlayableDirectory(dir)
-	print("Scanned Directory")
+	#print("Scanned Directory")
 	
 	var rootJSON : String
 	
@@ -93,11 +135,49 @@ func _on_file_dialog_dir_selected(dir):
 		x.RootDirectory.UnPack(JSON.parse_string(rootJSON))
 		playlistJSON.close()
 	
+	x.currentDir = x.RootDirectory
 	x.RootAccess.unlock()
 	
-	%Audio.FetchNextSong()
-	%Audio.PlaySong()
-	%UI.BuildMixer(x.RootDirectory)
+	x.nextSong = x.currentDir.ChooseSong()
+	%Audio.LoadSong(x.nextSong.path)
+	x.SongEquallsNextSong()
+	PlayNextSong()
+	DisplayDirectory(x.currentDir)
+
+# Handle skip button
+func _on_skip_button_pressed():
+	PlayNextSong()
+
+# Handle transport
+func _on_play_pause_toggled(toggled_on):
+	if toggled_on:
+		%Play_Pause.icon = x.playIcon
+		%Audio.stream_paused = true
+		%UI.KillTweens()
+	else:
+		%Audio.stream_paused = false
+		%UI.TweenTimeline(%Timeline.value, x.numSamples, x.samplerate)
+		%Play_Pause.icon = x.pauseIcon
+
+func _on_timeline_drag_started():
+	%UI.KillTweens()
+
+func _on_timeline_drag_ended(value_changed):
+	var timeElapsed = %Timeline.value  / x.samplerate
+	#print(timeElapsed," ", playingSongLength," ", timeLeft)
+	%Audio.seek(timeElapsed)
+	
+	%UI.TweenTimeline(%Timeline.value, x.numSamples, x.samplerate)
+
+func DisplayDirectory(group : Playable):
+	for child in %Mixer.get_children():
+		if child == %Header:
+			continue
+		child.queue_free()
+	x.currentDir = group
+	%UI.BuildMixer(%Mixer, group)
+	
+	%Header.Setup(group)
 
 # Handle closing notifications
 func _notification(what):

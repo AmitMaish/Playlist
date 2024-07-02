@@ -3,15 +3,19 @@ class_name Playable
 extends Node
 
 var rng = RandomNumberGenerator.new()
-var path: String
-#var name: String
-var isDir = false
-var volume = 0
-var children = Array()
+
+var path	:	String
+#var name	:	String
+var album	:	String
+var artist	:	String
+var metadata:	Array = Array()
+var isDir	:	bool = false
+var volume	:	int = 0#db
+var children:	Array = Array()
 
 var weight = 1
-var mute: bool = false
-var solo: bool = false
+var mute	:	bool = false
+var solo	:	bool = false
 
 func _init(_path: String):
 	path = _path
@@ -52,6 +56,7 @@ func weightedRandomChild():
 			return child
 
 func ChooseSong():
+	x.volume += volume
 	if isDir:
 		#print("Dir: " + name)
 		var child = weightedRandomChild()
@@ -60,6 +65,7 @@ func ChooseSong():
 			return child.ChooseSong()
 		else:
 			#print("Returning:" + child.path)
+			x.volume += child.volume
 			return child
 	else:
 		#print("Song: " + name)
@@ -68,13 +74,16 @@ func ChooseSong():
 # Saving Logic
 func Pack():
 	var data = {
-		"name": name,
-		"path": path,
-		"isDir": isDir,
-		"weight": weight,
-		"volume": volume,
-		"mute": mute,
-		"solo": solo,
+		"name"	:	name,
+		"album"	:	album,
+		"artist":	artist,
+		"metadata":	metadata,
+		"path"	:	path,
+		"isDir"	:	isDir,
+		"weight":	weight,
+		"volume":	volume,
+		"mute"	:	mute,
+		"solo"	:	solo,
 	}
 	if isDir:
 		data["children"] = []
@@ -82,19 +91,34 @@ func Pack():
 			data["children"].append(child.Pack())
 	return data
 
-func UnPack(data):
-	name	=	data["name"]
-	print("Unpacking ", name)
-	path	=	data["path"]
-	isDir	=	data["isDir"]
-	weight	=	data["weight"]
-	volume	=	data["volume"]
-	mute	=	data["mute"]
-	solo	=	data["solo"]
-	
-	if isDir:
-		for item in data["children"]:
-			for child in children:
-				if child.path == item["path"]:
-					print(item["name"], " found")
-					child.UnPack(item)
+func UnPack(data : Dictionary):
+	for key in data.keys():
+		match key:
+			"name":
+				name = data[key]
+			"album":
+				album = data[key]
+			"artist":
+				artist = data[key]
+			"metadata":
+				metadata = data[key]
+			"path":
+				path = data[key]
+			"isDir":
+				isDir = data[key]
+			"weight":
+				weight = data[key]
+			"volume":
+				volume = data[key]
+			"mute":
+				mute = data[key]
+			"solo":
+				solo = data[key]
+			"children":
+				if isDir:
+					for item in data["children"]:
+						print("Looking for ", item["name"])
+						var matchingChild = children.filter(func(input : Playable): return item["path"] == input.path).front()
+						if matchingChild != null:
+							print(item["name"], " found")
+							matchingChild.UnPack(item)

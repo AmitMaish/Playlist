@@ -10,8 +10,17 @@ func SelectChannel(song: Playable):
 
 
 func _on_add_to_queue_pressed():
-	%UI.AddToQueue(selectedChannel)
+	$"../../../../../../../../..".AddToQueue(selectedChannel)
 
 
 func _on_volume_slider_value_changed(value):
 	selectedChannel.volume = value
+
+
+func _on_transport_focus_entered():
+	# Thread saftey
+	x.audioAccess.lock()
+	
+	SelectChannel(x.song)
+	
+	x.audioAccess.unlock()

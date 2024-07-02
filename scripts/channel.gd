@@ -2,10 +2,10 @@ class_name Channel
 
 extends PanelContainer
 
-var playable: Playable
-var UI: UI
+var playable	:	Playable
+var playlist	:	Node
 
-func Setup(song: Playable):
+func Setup(song : Playable):
 	playable = song
 	%"Mute Button".button_pressed = song.mute
 	%"Solo Button".button_pressed = song.solo
@@ -37,10 +37,22 @@ func _on_channel_name_text_submitted(new_text):
 
 func _on_mouse_entered():
 	%"Queue Button".show()
-
+	%"Fullscreen Button".show()
 
 func _on_mouse_exited():
-	%"Queue Button".hide()
+	if %"Queue Button" != null: 
+		%"Queue Button".hide()
+		%"Fullscreen Button".hide()
 
 func _on_add_to_queue_pressed():
-	UI.AddToQueue(playable)
+	print("Add to queue pressed")
+	playlist.AddToQueue(playable)
+
+func _on_fullscreen_pressed():
+	playlist.DisplayDirectory(playable)
+
+func _notification(what):
+	match what:
+		NOTIFICATION_PREDELETE:
+			%"Queue Button".hide()
+			%"Fullscreen Button".hide()
