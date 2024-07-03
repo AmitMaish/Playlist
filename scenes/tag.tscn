@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://6qahikilf4vl"]
+
+[ext_resource type="Script" path="res://scenes/tag.gd" id="1_004ym"]
+[ext_resource type="Texture2D" uid="uid://bd5b0gbc2mfrx" path="res://icons/remove.svg" id="1_l7re1"]
+
+[node name="Tag" type="HBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_004ym")
+
+[node name="Remove Tag" type="Button" parent="."]
+visible = false
+layout_mode = 2
+mouse_filter = 1
+icon = ExtResource("1_l7re1")
+flat = true
+
+[node name="Tag Name" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Tag name"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="Remove Tag" to="." method="_on_remove_tag_pressed"]

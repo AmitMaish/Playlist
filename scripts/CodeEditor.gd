@@ -1,4 +1,4 @@
-extends LineEdit
+extends TextEdit
 
 func _input(event):
 	if has_focus():
@@ -6,3 +6,6 @@ func _input(event):
 			if event.keycode == KEY_ENTER:
 				hide()
 				show()
+				%SelectedChannel.AddTag(text)
+				clear()
+

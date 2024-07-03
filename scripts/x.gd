@@ -25,6 +25,8 @@ var queue		:	Array = Array()
 var queued		:	bool = false
 var queueAccess	:	Mutex = Mutex.new()
 
+var knownTags	:	Dictionary = {}
+
 var volume		:	float = 0#db
 
 

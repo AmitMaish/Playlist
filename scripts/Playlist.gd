@@ -104,6 +104,7 @@ func OpenPlayableDirectory(dir: String):
 					continue
 			contents.append(playable)
 		file = directory.get_next()
+	
 	return contents
 
 
@@ -171,8 +172,6 @@ func _on_timeline_drag_ended(value_changed):
 
 func DisplayDirectory(group : Playable):
 	for child in %Mixer.get_children():
-		if child == %Header:
-			continue
 		child.queue_free()
 	x.currentDir = group
 	%UI.BuildMixer(%Mixer, group)

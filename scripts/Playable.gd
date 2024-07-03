@@ -8,7 +8,7 @@ var path	:	String
 #var name	:	String
 var album	:	String
 var artist	:	String
-var metadata:	Array = Array()
+var tags	:	Array = Array()
 var isDir	:	bool = false
 var volume	:	int = 0#db
 var children:	Array = Array()
@@ -77,7 +77,7 @@ func Pack():
 		"name"	:	name,
 		"album"	:	album,
 		"artist":	artist,
-		"metadata":	metadata,
+		"tags"	:	tags,
 		"path"	:	path,
 		"isDir"	:	isDir,
 		"weight":	weight,
@@ -100,8 +100,8 @@ func UnPack(data : Dictionary):
 				album = data[key]
 			"artist":
 				artist = data[key]
-			"metadata":
-				metadata = data[key]
+			"tags":
+				tags = data[key]
 			"path":
 				path = data[key]
 			"isDir":
